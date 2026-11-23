@@ -1,0 +1,8 @@
+{
+  "_provenance": "Authored synthetic ISS-shaped fixture; not downloaded exchange data",
+  "history": {
+    "columns": ["BOARDID", "TRADEDATE", "SECID", "CLOSE"],
+    "data": [["TQBR", "2024-01-01", "DEMO", 100], ["TQBR", "2024-01-03", "DEMO", 102]]
+  },
+  "history.cursor": {"columns": ["INDEX", "TOTAL", "PAGESIZE"], "data": [[0, 3, 2]]}
+}

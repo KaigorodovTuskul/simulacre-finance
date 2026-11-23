@@ -1,0 +1,21 @@
+Portfolio optimization formulations adapted from:
+https://github.com/KaigorodovTuskul/portfolio-models-agent-skill
+stable commit cf90e1f625bef8210ddfbfee56a3e232cfc2ef48
+skills/portfolio-models/scripts/models.py and advanced_models.py
+Copyright (c) 2026 Tuskul Kaigorodov, MIT (full text in LICENSE).
+Adaptations: typed dated inputs, general bounds/budget, scaling, error handling,
+sparse CVaR constraints, solver diagnostics and public result contracts.
+
+NumPy (BSD-3-Clause primary license, bundled component licenses also apply)
+and SciPy (BSD-3-Clause primary license, bundled solver notices apply)
+are dependencies, not vendored source. Optional HTTPX is BSD-3-Clause.
+Development tool licensing: pytest MIT; Ruff MIT; mypy MIT; scipy-stubs BSD-3-Clause;
+build MIT; Twine Apache-2.0; Hatchling MIT. Their distributions carry their own notices.
+
+Ziplime was inspected for execution/accounting concepts only. No source or
+datasets were copied. Its README and repository LICENSE give differing copyleft
+labels; neither is relicensed or incorporated here.
+
+All checked-in numerical datasets are authored synthetic fixtures, not MOEX data.
+Provider access does not grant permission to redistribute exchange data.
+

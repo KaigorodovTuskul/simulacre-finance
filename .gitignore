@@ -1,0 +1,15 @@
+.venv/
+.venv-wheel/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+dist-verified/
+build/
+*.egg-info/
+pytest-of-*/
+build-env-*/
+build-requirements-*.txt
+pip-*/
+
