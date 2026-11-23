@@ -85,4 +85,3 @@ callers were tested as listed.
 - SciPy solver contracts: https://docs.scipy.org/doc/scipy/reference/optimize.html
 - MOEX ISS endpoint reference: https://iss.moex.com/iss/reference/
 - Portfolio Models source and MIT attribution: see NOTICE.
-

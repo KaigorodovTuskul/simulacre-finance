@@ -56,4 +56,3 @@ the final release gate is recorded in implementation.md.
 The initial package-review round-two attempt hit an account usage limit and returned
 no score. It was retried after the user resumed work; only the completed review's
 9.1 score is counted. Scores from different versions were not mixed.
-

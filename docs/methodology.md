@@ -166,4 +166,3 @@ is a research computation package, not a live trading or execution system.
 
 Independent financial, package and integration reviews reached a mean **9.1/10**
 after fixes. See [review findings and validation evidence](reviews.md).
-

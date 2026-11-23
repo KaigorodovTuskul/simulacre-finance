@@ -87,4 +87,3 @@ discovery (`search_tools`, `describe_dataset`) and authenticated OAuth/personal-
 access at https://simulacre-ai.ru/mcp. No credential was supplied or needed for
 this work. No authenticated provider is advertised or implemented: existing hosts
 fetch authorized responses, map them, then call this offline library.
-
