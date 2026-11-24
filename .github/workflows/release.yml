@@ -52,15 +52,36 @@ jobs:
           /tmp/finance-wheel/bin/python -I -c 'import simulacre_finance; print(simulacre_finance.__version__)'
           /tmp/finance-wheel/bin/python -I examples/portfolio.py
           /tmp/finance-wheel/bin/python -I examples/bond.py
+      - name: Verify macro wheel extra with an offline response
+        run: |
+          /tmp/finance-wheel/bin/python -m pip install "$(find dist -name '*.whl' -print -quit)[macro]"
+          /tmp/finance-wheel/bin/python -I - <<'PY'
+          import httpx
+          from simulacre_finance import CBR
+          xml = '<ValCurs ID="R01375"><Record Date="09.01.2024" Id="R01375"><Nominal>10</Nominal><Value>125,00</Value></Record></ValCurs>'
+          with httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(200, text=xml))) as client:
+              df = CBR(client=client).exchange_rates('CNY', '2024-01-01', '2024-01-31')
+              assert df.rate.iloc[0] == 12.5
+          PY
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: python-distributions
           path: dist/*
           if-no-files-found: error
 
+  minimum-macro-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+      - run: python -m pip install '.[macro]' pytest numpy==1.26.4 scipy==1.12.0 pandas==2.2.0 httpx==0.27.0 defusedxml==0.7.1
+      - run: python -m pytest -q
+
   publish:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [minimum-dependencies, quality-and-build]
+    needs: [minimum-dependencies, minimum-macro-dependencies, quality-and-build]
     runs-on: ubuntu-latest
     environment:
       name: pypi

@@ -3,6 +3,10 @@
 ## Conventions
 
 All returns, yields, rates and weights are decimals: 0.05 means 5%.
+Optional macro DataFrames also use decimal interest rates, while money amounts,
+index points and GDP retain the units explicitly recorded in `DataFrame.attrs["units"]`.
+They may contain documented source nulls and are not validated portfolio matrices;
+see [macro data contracts](macro.md) before passing them to portfolio calculations.
 Dated matrices are rows of observations, columns of named assets. Dates are strictly
 increasing ISO dates. Currency, observation frequency, annualization count, source,
 data vintage, adjustment policy and price/total-return classification are explicit.

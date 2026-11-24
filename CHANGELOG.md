@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 — 2026-11-24
+
+- Optional `[macro]` extra: public CBR XML/JSON, MOEX ISS daily macro candles,
+  FRED CSV and World Bank GDP loaders returning pandas DataFrames.
+- Typed sorted dates, explicit units/provenance, bounded retries/pagination,
+  safe XML parsing and injectable HTTPX clients. Core dependencies are unchanged.
+- No Cbonds, browser automation, PDF/Excel parsers or private service dependency.
+- See [macro data guide](docs/macro.md) for available datasets and exclusions.
+
 ## 0.1.0 — 2026-11-23
 
 First public release of Simulacre Finance, extracted into an independent MIT

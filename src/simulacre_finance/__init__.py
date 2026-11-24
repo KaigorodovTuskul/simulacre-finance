@@ -24,6 +24,7 @@ if TYPE_CHECKING:
         yield_to_maturity,
     )
     from .data import Metadata, PriceData, ReturnData, load_csv
+    from .macro import CBR, FRED, MOEXMacro, WorldBank
     from .portfolio import METHODS, OptimizationResult, optimize
     from .providers import Instrument, MoexISS
     from .risk import RiskReport, historical_tail_risk, risk_report, turnover
@@ -31,6 +32,7 @@ if TYPE_CHECKING:
 # Keep cash accrual imports free of NumPy/SciPy startup costs; static analyzers
 # still see the explicit typed exports above.
 _LAZY = {
+    **dict.fromkeys(("CBR", "FRED", "MOEXMacro", "WorldBank"), "macro"),
     **dict.fromkeys(("BacktestResult", "Rebalance", "compare_methods", "walk_forward"), "backtest"),
     **dict.fromkeys(
         (
@@ -59,8 +61,12 @@ def __getattr__(name: str) -> Any:
     return value
 
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = [
+    "CBR",
+    "FRED",
+    "MOEXMacro",
+    "WorldBank",
     "Metadata",
     "PriceData",
     "ReturnData",

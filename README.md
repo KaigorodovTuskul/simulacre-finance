@@ -1,6 +1,6 @@
 # Simulacre Finance
 
-**Portfolio optimization, risk metrics, fixed-cash-flow bonds, and walk-forward backtesting.**
+**Portfolio optimization, risk, bonds, backtesting, and optional macroeconomic DataFrames.**
 
 [![Checks](https://github.com/KaigorodovTuskul/simulacre-finance/actions/workflows/release.yml/badge.svg)](https://github.com/KaigorodovTuskul/simulacre-finance/actions/workflows/release.yml)
 [![PyPI](https://img.shields.io/pypi/v/simulacre-finance)](https://pypi.org/project/simulacre-finance/)
@@ -9,7 +9,8 @@
 
 A typed Python computation library for reproducible financial research. Run the
 entire analytical pipeline offline with your own data. NumPy and SciPy are the
-only runtime dependencies; public MOEX ISS access is an optional extra.
+only core runtime dependencies. Public MOEX ISS access and pandas macro data
+loaders are optional extras.
 
 Built for [Simulacre AI](https://simulacre-ai.ru/site/) and usable independently
 of its website, Telegram bot, MCP server, or accounts.
@@ -37,9 +38,51 @@ pip install "simulacre-finance[http]"
 The distribution is named `simulacre-finance`; import it as `simulacre_finance`.
 Source installation is also supported: clone this repository and run `pip install .`.
 
+## Macro data
+
+Available from version **0.2.0**. Install the optional macro extra:
+
+```sh
+pip install "simulacre-finance[macro]"
+# Or add it to a uv project:
+uv add "simulacre-finance[macro]"
+```
+
+For local development, run `pip install -e ".[macro]"` from this repository.
+
+```python
+from simulacre_finance import CBR, FRED, MOEXMacro, WorldBank
+
+rates = CBR().key_rate(start="2024-01-01", end="2024-12-31")
+print(rates.tail())          # pandas DataFrame: date, rate
+print(rates.attrs["units"])  # {"rate": "decimal annual rate"}; 0.16 = 16%
+
+money = CBR().monetary_aggregates("2024-01-01", "2024-12-31")
+rusfar = MOEXMacro().rusfar_curve("2024-01-01", "2024-12-31")
+treasuries = FRED().treasury_yields("2024-01-01", "2024-12-31")
+gdp = WorldBank().nominal_gdp(2020, 2024, country="RUS")
+```
+
+| Provider | DataFrames |
+| --- | --- |
+| CBR | Key rate, RUONIA, weekly/monthly international reserves, bank liquidity, liquidity operations, correspondent accounts, bank deposits, official FX rates, M0/M1/M2/M2X and ruble deposit levels |
+| MOEXMacro | IMOEX, RGBI and other SNDX indices, five RUSFAR tenors and their dated curve, OFZ clean price quotes |
+| FRED | Eleven US Treasury yield tenors; Russian nominal quarterly GDP |
+| WorldBank | Annual nominal GDP in current local currency |
+
+Dates are sorted observations, not release timestamps. Rates are decimals;
+amounts retain documented source units. Source nulls stay `NaN`; calendars are
+never filled automatically. Failures raise `DataUnavailableError` instead of
+silently returning partial data. HTTPX, pandas and the small `defusedxml` parser
+are installed only with `[macro]`; no browser, PDF/Excel engine or Cbonds is used.
+
+See the [macro API and data contracts](docs/macro.md), the
+[indicator-by-indicator coverage and exclusions](docs/macro-coverage.md), and the
+[runnable network example](examples/macro.py).
+
 ## What it does
 
-| Area | Available in 0.1.0 |
+| Area | Available |
 | --- | --- |
 | Data | Validated dated price/return matrices, wide CSV, instrument lookup and paginated MOEX ISS share closes |
 | Optimization | Equal weight, global minimum variance, exact equal risk contribution, minimum historical CVaR |
@@ -143,9 +186,10 @@ python -m build
 python -m twine check dist/*
 ```
 
-The offline suite has **114 tests**, including analytical optimizer references,
+The offline suite includes analytical optimizer references,
 hand-calculated portfolio paths, no-lookahead checks, self-financing fees, provider
-pagination failures and bond sensitivity/yield round trips. Fixtures are authored
+pagination failures, bond sensitivity/yield round trips and optional macro provider
+contracts. Fixtures are authored
 synthetic data. Core installation and the entire suite were also tested with
 Python 3.11, NumPy 1.26.4 and SciPy 1.12.0, without HTTPX.
 
